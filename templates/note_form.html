@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>{% if note %}Edit note{% else %}New note{% endif %} · Obsidian clone</title>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    </head>
+
+    <body>
+        <div class="app">
+            <header class="app-header">
+                <a href="{{ url_for('index') }}" class="nav-logo">Obsidian clone</a>
+
+                <nav class="nav-links">
+                    <span class="nav-username">{{ session.username }}</span>
+
+                    <form method="POST" action="{{ url_for('logout') }}">
+                        <button type="submit" class="button button-danger">Log out</button>
+                    </form>
+                </nav>
+            </header>
+
+            <main>
+                {% if error %}
+                    <p class="error">{{ error }}</p>
+                {% endif %}
+                
+                <form method="POST">
+                    <div>
+                        <label for="title">Title</label>
+                        <input type="text" id="title" name="title" value="{% if note %}{{ note['title'] }}{% endif %}" required autofocus>
+                    </div>
+
+                    <div>
+                        <label for="content">Content</label>
+
+                        <textarea id="content" name="content" rows="12">{% if note %}{{ note['content'] }}{% endif %}</textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="button">{% if note %}Save changes{% else %}Save note{% endif %}</button>
+                        
+                        {% if note %}
+                            <a href="{{ url_for('view_note', note_id=note['id']) }}">Cancel</a>
+                        {% else %}
+                            <a href="{{ url_for('index') }}">Cancel</a>
+                        {% endif %}
+                    </div>
+                </form>
+            </main>
+        </div>
+    </body>
+</html>

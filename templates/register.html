@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>Register · Obsidian clone</title>
+        
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    </head>
+
+    <body>
+        <div class="app">
+            <header class="app-header">
+                <h1>Register</h1>
+
+                <a href="{{ url_for('index' )}}">← Home</a>
+            </header>
+
+            <main>
+                {% if error %}
+                    <p class="error">{{ error }}</p>
+                {% endif %}
+            
+                <form method="POST">
+                    <div>
+                        <label for="username">Username</label>
+                        
+                        <input type="text" id="username" name="username" required autofocus>
+                    </div>
+                    
+                    <div>
+                        <label for="password">Password</label>
+
+                        <input type="password" id="password" name="password" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="button">Create account</button>
+                        
+                        <a href="{{ url_for('index') }}">Already have an account?</a>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </body>
+</html>

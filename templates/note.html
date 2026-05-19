@@ -2,7 +2,7 @@
 
 <html lang="en">
     <head>
-        <title>{{ title }}</title>
+        <title>{{ note['title'] }} · Obsidian clone</title>
 
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     </head>
@@ -13,6 +13,7 @@
                 <a href="{{ url_for('index') }}" class="nav-logo">Obsidian clone</a>
 
                 <nav class="nav-links">
+
                     {% if session.user_id %}
                         <span class="nav-username">{{ session.username }}</span>
 
@@ -30,27 +31,29 @@
             </header>
 
             <main>
-                {% if notes %}
-                    <ul>
-                        {% for item in notes %}
-                            <li>
-                                <a href="{{ url_for('view_note', note_id=item['note']['id']) }}">{{ item['note']['title'] }}</a>
+                <div class="note-header">
+                    <h1>{{ note['title'] }}</h1>
 
-                                <span class = "note-badges">
-                                    <span class="heat-badge">⬡ {{ item['heat'] }}</span>
-                                    
-                                    <span class="age-badge age-{{ item['age_status'] }}">{{ item['age_status'] }} · {{ item['age_days'] }}d</span>
-                                </span>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p>No notes yet.
-                        {% if session.user_id %}
-                            <a href="{{ url_for('new_note') }}">Create one!</a>
-                        {% endif %}
-                    </p>
-                {% endif %}
+                    <div class="header-actions">
+                        <a href="{{ url_for('edit_note', note_id=note['id']) }}" class="button">Edit</a>
+
+                        <form method="POST" action="{{ url_for('delete_note', note_id=note['id']) }}">
+                            <button type="submit" class="button button-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+
+                <p>{{ note['content'] }}</p>
+
+                <p class="meta">
+                    Last updated: {{ note['updated_at'] }} &nbsp;·&nbsp;
+
+                    <span class="heat-badge">⬡ {{ heat }}</span> &nbsp;·&nbsp;
+                    
+                    <span class="age-badge age-{{ age_status }}">{{ age_status }} · {{ age_days }}d</span>
+                </p>
+
+                <a href="{{ url_for('index') }}">← All notes</a>
             </main>
         </div>
     </body>
